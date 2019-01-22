@@ -5,9 +5,15 @@
     <title>Upload</title>
 </head>
 <body>
-<form method=POST enctype=multipart/form-data action="{{ url_for('upload') }}">
-    <input type=file name=doc>
-    <input type="submit">
+<form method="POST" enctype="multipart/form-data" action="{{ url_for('run_process') }}">
+    <fieldset>
+        <legend>UPLOAD DY-SOI DATA AND HIERARCHY</legend>
+        <input type=file name=doc>
+        <input type="submit" name="action" value="UPLOAD FILE">
+        <br>
+        <br>
+        <a href="/download/process_output_dy_soi.xlsx">Click To Download the Process File</a>
+    </fieldset>
 </form>
 </body>
 </html>
