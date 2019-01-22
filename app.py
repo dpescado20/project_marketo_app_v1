@@ -9,11 +9,11 @@ app = Flask(__name__)
 
 docs = UploadSet('docs', DATA)
 
-app.config['UPLOADED_DOCS_DEST'] = 'uploads/docs'
+app.config['UPLOADED_DOCS_DEST'] = 'uploads'
 configure_uploads(app, docs)
 
-UPLOADED_FILES_PATH = './uploads/docs'
-DOWNLOADED_FILES_PATH = './downloads/docs'
+UPLOADED_FILES_PATH = '/uploads'
+DOWNLOADED_FILES_PATH = '/downloads'
 
 
 def upload():
