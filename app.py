@@ -94,6 +94,9 @@ def run_process():
     files = uploaded_files()
 
     if len(files) == 2:
+        for filename in os.listdir(DOWNLOADED_FILES_PATH):
+            os.remove(os.path.join(DOWNLOADED_FILES_PATH, filename))
+
         df1 = pd.read_csv('{}/{}'.format(UPLOADED_FILES_PATH, files[0]))
         df2 = pd.read_csv('{}/{}'.format(UPLOADED_FILES_PATH, files[1]))
 
