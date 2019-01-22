@@ -9,11 +9,11 @@ app = Flask(__name__)
 
 docs = UploadSet('docs', DATA)
 
-app.config['UPLOADED_DOCS_DEST'] = 'uploads'
+app.config['UPLOADED_DOCS_DEST'] = 'project_marketo_app_v1/uploads'
 configure_uploads(app, docs)
 
-UPLOADED_FILES_PATH = 'uploads'
-DOWNLOADED_FILES_PATH = 'downloads'
+UPLOADED_FILES_PATH = 'project_marketo_app_v1/uploads'
+DOWNLOADED_FILES_PATH = 'project_marketo_app_v1/downloads'
 
 
 def upload():
