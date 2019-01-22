@@ -12,8 +12,8 @@ docs = UploadSet('docs', DATA)
 app.config['UPLOADED_DOCS_DEST'] = 'project_marketo_app_v1/uploads'
 configure_uploads(app, docs)
 
-UPLOADED_FILES_PATH = 'project_marketo_app_v1/uploads'
-DOWNLOADED_FILES_PATH = 'project_marketo_app_v1/downloads'
+UPLOADED_FILES_PATH = 'uploads'
+DOWNLOADED_FILES_PATH = 'downloads'
 
 
 def upload():
