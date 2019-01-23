@@ -22,15 +22,8 @@ configure_uploads(app, docs)
 
 
 def upload():
-    files = uploaded_files()
-    if len(files) > 2:
-        for filename in os.listdir(UPLOADED_FILES_PATH):
-            os.remove(os.path.join(UPLOADED_FILES_PATH, filename))
-        if request.method == 'POST' and 'doc' in request.files:
-            docs.save(request.files['doc'])
-    else:
-        if request.method == 'POST' and 'doc' in request.files:
-            docs.save(request.files['doc'])
+    if request.method == 'POST' and 'doc' in request.files:
+        docs.save(request.files['doc'])
 
 
 def uploaded_files():
@@ -113,16 +106,23 @@ def run_process():
         df1 = pd.read_csv('{}/{}'.format(UPLOADED_FILES_PATH, files[0]))
         df2 = pd.read_csv('{}/{}'.format(UPLOADED_FILES_PATH, files[1]))
 
+        for filename in os.listdir(UPLOADED_FILES_PATH):
+            os.remove(os.path.join(UPLOADED_FILES_PATH, filename))
+
         output_file = dysoi_process(df1=df2, df2=df1)
         output_file = 'Click To Download: {}'.format(output_file)
+    elif len(files) > 2:
+        for filename in os.listdir(DOWNLOADED_FILES_PATH):
+            os.remove(os.path.join(DOWNLOADED_FILES_PATH, filename))
+
+        for filename in os.listdir(UPLOADED_FILES_PATH):
+            os.remove(os.path.join(UPLOADED_FILES_PATH, filename))
 
     return render_template('dysoi.html', result_file=output_file)
 
 
 @app.route('/download/<path:path>')
 def download(path):
-    for filename in os.listdir(UPLOADED_FILES_PATH):
-        os.remove(os.path.join(UPLOADED_FILES_PATH, filename))
     return send_from_directory(DOWNLOADED_FILES_PATH, path)
 
 
