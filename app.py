@@ -26,6 +26,11 @@ def upload():
         docs.save(request.files['doc'])
 
 
+def delete():
+    for filename in os.listdir(UPLOADED_FILES_PATH):
+        os.remove(os.path.join(UPLOADED_FILES_PATH, filename))
+
+
 def uploaded_files():
     files = []
     for filename in os.listdir(UPLOADED_FILES_PATH):
@@ -109,20 +114,18 @@ def run_process():
         for filename in os.listdir(UPLOADED_FILES_PATH):
             os.remove(os.path.join(UPLOADED_FILES_PATH, filename))
 
-        output_file = dysoi_process(df1=df2, df2=df1)
-        output_file = 'Click To Download: {}'.format(output_file)
-    elif len(files) > 2:
         for filename in os.listdir(DOWNLOADED_FILES_PATH):
             os.remove(os.path.join(DOWNLOADED_FILES_PATH, filename))
 
-        for filename in os.listdir(UPLOADED_FILES_PATH):
-            os.remove(os.path.join(UPLOADED_FILES_PATH, filename))
+        output_file = dysoi_process(df1=df2, df2=df1)
+        output_file = 'Click To Download: {}'.format(output_file)
 
     return render_template('dysoi.html', result_file=output_file)
 
 
 @app.route('/download/<path:path>')
 def download(path):
+    delete()
     return send_from_directory(DOWNLOADED_FILES_PATH, path)
 
 
