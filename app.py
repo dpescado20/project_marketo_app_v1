@@ -100,7 +100,7 @@ def run_process():
 
     upload()
     files = uploaded_files()
-    output_file = str
+    output_file = None
 
     if len(files) == 2:
         df1 = pd.read_csv('{}/{}'.format(UPLOADED_FILES_PATH, files[0]))
