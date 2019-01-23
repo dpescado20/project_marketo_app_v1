@@ -95,18 +95,21 @@ def dysoi_process(df1, df2):
 
 @app.route('/', methods=['GET', 'POST'])
 def run_process():
+    for filename in os.listdir(DOWNLOADED_FILES_PATH):
+        os.remove(os.path.join(DOWNLOADED_FILES_PATH, filename))
+
     upload()
     files = uploaded_files()
+    output_file = str
 
     if len(files) == 2:
-        for filename in os.listdir(DOWNLOADED_FILES_PATH):
-            os.remove(os.path.join(DOWNLOADED_FILES_PATH, filename))
-
         df1 = pd.read_csv('{}/{}'.format(UPLOADED_FILES_PATH, files[0]))
         df2 = pd.read_csv('{}/{}'.format(UPLOADED_FILES_PATH, files[1]))
 
-        dysoi_process(df1=df2, df2=df1)
-    return render_template('dysoi.html')
+        output_file = dysoi_process(df1=df2, df2=df1)
+        output_file = 'Click To Download: {}'.format(output_file)
+
+    return render_template('dysoi.html', result_file=output_file)
 
 
 @app.route('/download/<path:path>')
