@@ -26,11 +26,6 @@ def upload():
         docs.save(request.files['doc'])
 
 
-def delete():
-    for filename in os.listdir(UPLOADED_FILES_PATH):
-        os.remove(os.path.join(UPLOADED_FILES_PATH, filename))
-
-
 def uploaded_files():
     files = []
     for filename in os.listdir(UPLOADED_FILES_PATH):
@@ -125,7 +120,8 @@ def run_process():
 
 @app.route('/download/<path:path>')
 def download(path):
-    delete()
+    for filename in os.listdir(UPLOADED_FILES_PATH):
+        os.remove(os.path.join(UPLOADED_FILES_PATH, filename))
     return send_from_directory(DOWNLOADED_FILES_PATH, path)
 
 
