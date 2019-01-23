@@ -9,15 +9,15 @@ app = Flask(__name__)
 
 docs = UploadSet('docs', DATA)
 
-UPLOADED_FILES_PATH = 'uploads'
+UPLOADED_FILES_PATH = '/uploads'
 if not os.path.exists(UPLOADED_FILES_PATH):
     os.makedirs(UPLOADED_FILES_PATH)
 
-DOWNLOADED_FILES_PATH = 'downloads'
+DOWNLOADED_FILES_PATH = '/downloads'
 if not os.path.exists(DOWNLOADED_FILES_PATH):
     os.makedirs(DOWNLOADED_FILES_PATH)
 
-app.config['UPLOADED_DOCS_DEST'] = 'uploads'
+app.config['UPLOADED_DOCS_DEST'] = '/uploads'
 configure_uploads(app, docs)
 
 
