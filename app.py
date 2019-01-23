@@ -22,8 +22,15 @@ configure_uploads(app, docs)
 
 
 def upload():
-    if request.method == 'POST' and 'doc' in request.files:
-        docs.save(request.files['doc'])
+    files = uploaded_files()
+    if len(files) > 2:
+        for filename in os.listdir(UPLOADED_FILES_PATH):
+            os.remove(os.path.join(UPLOADED_FILES_PATH, filename))
+        if request.method == 'POST' and 'doc' in request.files:
+            docs.save(request.files['doc'])
+    else:
+        if request.method == 'POST' and 'doc' in request.files:
+            docs.save(request.files['doc'])
 
 
 def uploaded_files():
