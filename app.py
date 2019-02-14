@@ -112,17 +112,20 @@ def acamember_process(df1, df2):
 
 
 def emaillookup_process(df1):
-    df_name = df1['name']
+    df1['name'] = df1['name'].str.strip()
+    df1['look'] = df1['look'].str.strip()
+    df1['email'] = df1['email'].str.strip()
+    df1.reset_index(inplace=True)
+    df_name = df1[['index', 'name']]
     df_look = df1[['look', 'email']]
     df_look.rename(columns={'look': 'name'}, inplace=True)
 
-    print(df_look.head())
-
-    # df_result = pd.merge(df_name, df_look, on='name', how='inner')
+    df_result = pd.merge(df_name, df_look, on='name', how='inner')
 
     output_file_name = 'process_output_email_lookup.xlsx'
     writer = pd.ExcelWriter('{}/{}'.format(DOWNLOADED_FILES_PATH, output_file_name))
-    df_look.to_excel(writer, 'Sheet1', index=False)
+    df_result.to_excel(writer, 'Sheet1', index=False)
+
     writer.save()
     return output_file_name
 
@@ -181,7 +184,11 @@ def run_process_3():
         for filename in os.listdir(DOWNLOADED_FILES_PATH):
             os.remove(os.path.join(DOWNLOADED_FILES_PATH, filename))
 
-        df1 = pd.read_csv('{}/{}'.format(UPLOADED_FILES_PATH, files[0]), low_memory=False, encoding='latin1')
+        df1 = pd.read_csv('{}/{}'.format(UPLOADED_FILES_PATH, files[0]),
+                          low_memory=False,
+                          encoding='latin1',
+                          delimiter=',',
+                          skipinitialspace=True)
 
         for filename in os.listdir(UPLOADED_FILES_PATH):
             os.remove(os.path.join(UPLOADED_FILES_PATH, filename))
