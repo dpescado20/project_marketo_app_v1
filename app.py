@@ -152,7 +152,7 @@ def run_process():
     return render_template('dysoi.html', result_file=output_file)
 
 
-@app.route('/process/acamember', methods=['GET', 'POST'])
+@app.route('/process/acamember/', methods=['GET', 'POST'])
 def run_process_2():
     upload()
     files = uploaded_files()
@@ -174,7 +174,7 @@ def run_process_2():
     return render_template('acamember.html', result_file=output_file)
 
 
-@app.route('/process/emaillookup', methods=['GET', 'POST'])
+@app.route('/process/emaillookup/', methods=['GET', 'POST'])
 def run_process_3():
     upload()
     files = uploaded_files()
@@ -199,7 +199,7 @@ def run_process_3():
     return render_template('emaillookup.html', result_file=output_file)
 
 
-@app.route('/download/<path:path>')
+@app.route('/download/<path:path>/')
 def download(path):
     for filename in os.listdir(UPLOADED_FILES_PATH):
         os.remove(os.path.join(UPLOADED_FILES_PATH, filename))
