@@ -5,18 +5,15 @@
     <title>Data Processor</title>
 </head>
 <body>
-<form method="POST" enctype="multipart/form-data" action="{{ url_for('run_process') }}">
+<form method="POST" enctype="multipart/form-data" action="{{ url_for('run_process_2') }}">
     <fieldset>
-        <legend>UPLOAD DY-SOI DATA AND HIERARCHY</legend>
+        <legend>ACA MEMBER DATA CLEAN UP</legend>
         <input type=file name=doc>
         <input type="submit" name="action" value="UPLOAD FILE">
         <br>
         <br>
-        <a href="/download/process_output_dy_soi.xlsx">{{ result_file }}</a>
+        <a href="/download/process_output_aca_member.xlsx">{{ result_file }}</a>
     </fieldset>
 </form>
-<br>
-<br>
-<a href="process/emaillookup">E-Mail Look Up Process</a>
 </body>
 </html>

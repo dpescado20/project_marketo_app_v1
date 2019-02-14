@@ -93,6 +93,40 @@ def dysoi_process(df1, df2):
     return output_file_name
 
 
+def acamember_process(df1, df2):
+    '''df_unique_email.sort_values(inplace=True)
+    df_unique_email.drop_duplicates(keep='first', inplace=True)'''
+
+    # make email address column lowercase
+    df2['Email Address'] = df2['Email Address'].str.lower()
+
+    # filter rows by company name : no portal account
+    df2 = df2[df2['Company Name'] != 'Portal Account']
+
+    output_file_name = 'process_output_aca_member.xlsx'
+    writer = pd.ExcelWriter('{}/{}'.format(DOWNLOADED_FILES_PATH, output_file_name))
+    # df_unique_email.to_excel(writer, 'Sheet1', index=False)
+    df2.to_excel(writer, 'Sheet1', index=False)
+    writer.save()
+    return output_file_name
+
+
+def emaillookup_process(df1):
+    df_name = df1['name']
+    df_look = df1[['look', 'email']]
+    df_look.rename(columns={'look': 'name'}, inplace=True)
+
+    print(df_look.head())
+
+    # df_result = pd.merge(df_name, df_look, on='name', how='inner')
+
+    output_file_name = 'process_output_email_lookup.xlsx'
+    writer = pd.ExcelWriter('{}/{}'.format(DOWNLOADED_FILES_PATH, output_file_name))
+    df_look.to_excel(writer, 'Sheet1', index=False)
+    writer.save()
+    return output_file_name
+
+
 @app.route('/', methods=['GET', 'POST'])
 def run_process():
     upload()
@@ -109,13 +143,53 @@ def run_process():
         for filename in os.listdir(UPLOADED_FILES_PATH):
             os.remove(os.path.join(UPLOADED_FILES_PATH, filename))
 
-        for filename in os.listdir(DOWNLOADED_FILES_PATH):
-            os.remove(os.path.join(DOWNLOADED_FILES_PATH, filename))
-
         output_file = dysoi_process(df1=df2, df2=df1)
         output_file = 'Click To Download: {}'.format(output_file)
 
     return render_template('dysoi.html', result_file=output_file)
+
+
+@app.route('/process/acamember', methods=['GET', 'POST'])
+def run_process_2():
+    upload()
+    files = uploaded_files()
+    output_file = ''
+
+    if len(files) == 2:
+        for filename in os.listdir(DOWNLOADED_FILES_PATH):
+            os.remove(os.path.join(DOWNLOADED_FILES_PATH, filename))
+
+        df1 = pd.read_csv('{}/{}'.format(UPLOADED_FILES_PATH, files[0]), low_memory=False)
+        df2 = pd.read_csv('{}/{}'.format(UPLOADED_FILES_PATH, files[1]), low_memory=False)
+
+        for filename in os.listdir(UPLOADED_FILES_PATH):
+            os.remove(os.path.join(UPLOADED_FILES_PATH, filename))
+
+        output_file = acamember_process(df1=df2, df2=df1)
+        output_file = 'Click To Download: {}'.format(output_file)
+
+    return render_template('acamember.html', result_file=output_file)
+
+
+@app.route('/process/emaillookup', methods=['GET', 'POST'])
+def run_process_3():
+    upload()
+    files = uploaded_files()
+    output_file = ''
+
+    if len(files) == 1:
+        for filename in os.listdir(DOWNLOADED_FILES_PATH):
+            os.remove(os.path.join(DOWNLOADED_FILES_PATH, filename))
+
+        df1 = pd.read_csv('{}/{}'.format(UPLOADED_FILES_PATH, files[0]), low_memory=False, encoding='latin1')
+
+        for filename in os.listdir(UPLOADED_FILES_PATH):
+            os.remove(os.path.join(UPLOADED_FILES_PATH, filename))
+
+        output_file = emaillookup_process(df1=df1)
+        output_file = 'Click To Download: {}'.format(output_file)
+
+    return render_template('emaillookup.html', result_file=output_file)
 
 
 @app.route('/download/<path:path>')
